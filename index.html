@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>超级搞怪彩虹屁生成器</title>
+  <style>
+    :root {
+      --bg1: #ff008e;
+      --bg2: #ffcc00;
+      --bg3: #00e5ff;
+      --bg4: #7dff5f;
+      --card: rgba(255, 255, 255, 0.2);
+      --text: #2a0047;
+      --btn1: #ff5f6d;
+      --btn2: #ffc371;
+      --shadow: 0 12px 30px rgba(35, 0, 60, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      color: var(--text);
+      background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg4));
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      user-select: none;
+    }
+
+    body.prank {
+      animation: gradientMove 3.2s ease infinite, screenShake 0.16s linear infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes screenShake {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-1px, 1px) rotate(-0.35deg); }
+      50% { transform: translate(1px, -1px) rotate(0.35deg); }
+      75% { transform: translate(-1px, -1px) rotate(-0.2deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    .float-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(8px);
+      opacity: 0.45;
+      pointer-events: none;
+      animation: blobMove linear infinite;
+    }
+
+    @keyframes blobMove {
+      from { transform: translateY(20px) scale(1) rotate(0deg); }
+      to { transform: translateY(-120vh) scale(1.4) rotate(360deg); }
+    }
+
+    .app {
+      width: min(920px, 100%);
+      background: var(--card);
+      backdrop-filter: blur(8px);
+      border: 3px dashed rgba(255, 255, 255, 0.9);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 4vw, 34px);
+      text-align: center;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: clamp(1.55rem, 2.6vw, 2.5rem);
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 4px 0 #ff3d81, 0 8px 16px rgba(0, 0, 0, 0.25);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: clamp(0.95rem, 1.9vw, 1.2rem);
+      color: #2e0f50;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 999px;
+      display: inline-block;
+      padding: 6px 14px;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .btn {
+      border: none;
+      background: linear-gradient(135deg, var(--btn1), var(--btn2));
+      color: #fff;
+      font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+      font-weight: 900;
+      padding: clamp(14px, 2.2vw, 18px) clamp(18px, 4.5vw, 34px);
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 9px 0 #d93266, 0 18px 24px rgba(120, 0, 78, 0.3);
+      transform: translateY(0);
+      transition: transform 0.12s ease, filter 0.2s ease;
+      margin: 12px 0 18px;
+      width: min(100%, 380px);
+    }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0 18px;
+    }
+
+    .btn:hover {
+      filter: saturate(1.3);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .btn:active {
+      transform: translateY(6px) scale(0.985);
+      box-shadow: 0 4px 0 #d93266, 0 8px 12px rgba(120, 0, 78, 0.28);
+    }
+
+    .btn.prank-toggle {
+      background: linear-gradient(135deg, #7f5bff, #ff5fbd);
+      box-shadow: 0 9px 0 #683bc7, 0 18px 24px rgba(52, 12, 100, 0.25);
+      width: min(100%, 280px);
+    }
+
+    .btn.prank-toggle:active {
+      box-shadow: 0 4px 0 #683bc7, 0 8px 12px rgba(52, 12, 100, 0.22);
+    }
+
+    .btn.prank-toggle.active {
+      background: linear-gradient(135deg, #00d67d, #7bff00);
+      box-shadow: 0 9px 0 #16984f, 0 18px 24px rgba(6, 92, 35, 0.25);
+      animation: pulseGlow 0.9s ease infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { filter: saturate(1.2) drop-shadow(0 0 0 rgba(0, 255, 140, 0.2)); }
+      50% { filter: saturate(1.8) drop-shadow(0 0 14px rgba(0, 255, 140, 0.75)); }
+    }
+
+    .output-wrap {
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .output {
+      font-size: clamp(1.15rem, 3.4vw, 2.1rem);
+      line-height: 1.45;
+      font-weight: 900;
+      max-width: 22em;
+      color: #310056;
+      text-shadow: 0 2px 0 #fff, 0 0 16px rgba(255, 255, 255, 0.85);
+      opacity: 0;
+      transform: scale(0.86) rotate(-2deg);
+      will-change: transform, opacity, filter;
+    }
+
+    .output.show {
+      animation: popIn 0.45s ease forwards, wiggle 0.5s ease 0.45s 2, hueCycle 2.2s linear 0.45s infinite;
+    }
+
+    body.prank .output.show {
+      animation: popIn 0.3s ease forwards, wiggle 0.26s ease 0.25s 4, hueCycle 0.8s linear 0.2s infinite;
+    }
+
+    body.prank .app {
+      border-style: solid;
+      border-color: #fff;
+      box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.18), 0 14px 30px rgba(255, 0, 128, 0.35);
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.7) rotate(-5deg); }
+      70% { opacity: 1; transform: scale(1.07) rotate(3deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(-4px) rotate(-1.8deg); }
+      50% { transform: translateX(4px) rotate(1.8deg); }
+      75% { transform: translateX(-3px) rotate(-1deg); }
+    }
+
+    @keyframes hueCycle {
+      0% { filter: hue-rotate(0deg) saturate(1.1); }
+      100% { filter: hue-rotate(360deg) saturate(1.6); }
+    }
+
+    .tip {
+      margin-top: 8px;
+      color: #3d0f5e;
+      font-size: clamp(0.82rem, 1.8vw, 0.98rem);
+      font-weight: 700;
+      opacity: 0.85;
+    }
+
+    .spark {
+      position: absolute;
+      font-size: 24px;
+      pointer-events: none;
+      z-index: 9;
+      animation: sparkFly 1s ease forwards;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+    }
+
+    @keyframes sparkFly {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(360deg);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app {
+        border-width: 2px;
+        border-radius: 20px;
+      }
+
+      .output-wrap {
+        min-height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="bgLayer"></div>
+
+  <main class="app">
+    <h1>超级搞怪彩虹屁自动生成器</h1>
+    <p class="subtitle">你负责存在，我负责夸到离谱</p>
+    <div class="btn-row">
+      <button class="btn" id="generateBtn">点我！夸到你天灵盖发光</button>
+      <button class="btn prank-toggle" id="prankBtn" type="button">开启整蛊模式</button>
+    </div>
+    <div class="output-wrap">
+      <p id="output" class="output">准备好接受宇宙级夸夸了吗？</p>
+    </div>
+    <p class="tip">温馨提示：连续点击可触发“过载彩虹屁模式”</p>
+  </main>
+
+  <script>
+    const compliments = [
+      "你一出现，WiFi 信号都自动满格了！",
+      "你笑一下，隔壁打印机都开始吐玫瑰花。",
+      "你这颜值，自拍都得先预约档期。",
+      "你是人类吗？不，你是可爱超标的核反应堆！",
+      "你说句话，空气都自动加了奶盖。",
+      "你走路带风，风都怕跟不上你的节奏。",
+      "你一认真，地球都想给你发奖学金。",
+      "你简直是行走的快乐制造机plus pro max。",
+      "你今天这么好看，是偷偷开了美颜外挂吧？",
+      "你一眨眼，我的烦恼直接被格式化。",
+      "你这气质，连路灯都想给你打追光。",
+      "你不是宝藏，你是宝藏矿脉本人！",
+      "你一开口，连闹钟都决定再睡五分钟听你说。",
+      "你这脑回路，连导航都想跟着你学捷径。",
+      "你不叫优秀，你叫离谱地优秀。",
+      "你要是去卖萌，熊猫都得转行。",
+      "你站在那里，就是朋友圈封面级别。",
+      "你这魅力，蚊子都舍不得叮你。",
+      "你今天好看得像刚从漫画里逃出来。",
+      "你一努力，老天爷都开始卷起来了。",
+      "你是怎么做到又强又可爱还不讲道理的？",
+      "你这存在感，连空气都想和你合影。",
+      "你一开心，天气预报都自动改成晴天。",
+      "你的情绪价值，堪比24小时在线客服。",
+      "你比奶茶还治愈，而且还是无限续杯版。",
+      "你这反应速度，闪电看了都说内行。",
+      "你一抬头，星星都开始抢座位。",
+      "你不发光都难，因为你本来就是发光体。",
+      "你认真起来，连拖延症都瑟瑟发抖。",
+      "你这灵感，像打翻了银河调色盘。",
+      "你要是开课，连周一都愿意上班。",
+      "你一鼓掌，气氛组集体退休。",
+      "你这可爱程度，已经触发国家重点保护。",
+      "你是甜度超标的人间棉花糖火箭。",
+      "你一出现，背景音乐都自动切成高光时刻。",
+      "你这种人设，编剧都不敢这么写。",
+      "你连发呆都像在拍高级广告。",
+      "你这状态，主打一个闪闪惹人爱。",
+      "你要是去选美，评委会直接改规则。",
+      "你是宇宙寄来的惊喜盲盒，开出全是快乐。",
+      "你这思路，CPU看了都想给你让线程。",
+      "你一打招呼，社恐都能原地社牛。",
+      "你这气场，门禁卡都自己开门。",
+      "你比周末还让人期待，比红包还让人心动。",
+      "你连沉默都在散发“我很厉害”的香气。",
+      "你是怎么做到把普通日子过成嘉年华的？",
+      "你这笑容，能给阴天充值阳光。",
+      "你一上线，聊天框都自动冒彩带。",
+      "你这审美，连彩虹都想向你取经。",
+      "你是那种看一眼就会自动收藏的人。",
+      "你今天的可爱值已经突破云端存储上限。",
+      "你说“随便”，宇宙都不敢随便。",
+      "你一努力，幸运女神都变成你的粉头。",
+      "你不是天花板，你是天花板上面的天窗。",
+      "你这幽默感，笑点都排队给你点赞。",
+      "你一出现，尴尬都自动转场。",
+      "你简直是人间限定版快乐补给站。",
+      "你这手气，抓娃娃机都想主动投降。",
+      "你要是发光，太阳只能当氛围灯。",
+      "你不是普通厉害，你是离谱到需要备案的厉害。"
+    ];
+
+    const outputEl = document.getElementById("output");
+    const btn = document.getElementById("generateBtn");
+    const prankBtn = document.getElementById("prankBtn");
+    const bgLayer = document.getElementById("bgLayer");
+
+    let lastIndex = -1;
+    let prankMode = false;
+    let prankTimer = null;
+
+    function randomText() {
+      if (compliments.length === 1) return compliments[0];
+      let idx = Math.floor(Math.random() * compliments.length);
+      while (idx === lastIndex) {
+        idx = Math.floor(Math.random() * compliments.length);
+      }
+      lastIndex = idx;
+      return compliments[idx];
+    }
+
+    function burstSpark(x, y, intensity = 12) {
+      const emojis = ["✨", "🌈", "🎉", "💥", "🦄", "💖"];
+      for (let i = 0; i < intensity; i++) {
+        const s = document.createElement("span");
+        s.className = "spark";
+        s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        s.style.left = x + "px";
+        s.style.top = y + "px";
+        const angle = (Math.PI * 2 * i) / intensity;
+        const radius = 60 + Math.random() * 85;
+        s.style.setProperty("--dx", Math.cos(angle) * radius + "px");
+        s.style.setProperty("--dy", Math.sin(angle) * radius + "px");
+        document.body.appendChild(s);
+        s.addEventListener("animationend", () => s.remove());
+      }
+    }
+
+    function playGoofySound(chaos = false) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const now = ctx.currentTime;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+      gain.connect(ctx.destination);
+
+      const notes = chaos ? [880, 1180, 1480, 980] : [660, 880, 1180];
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        osc.type = chaos ? (i % 2 === 0 ? "triangle" : "square") : (i === 1 ? "square" : "sine");
+        osc.frequency.setValueAtTime(freq, now + i * 0.06);
+        osc.frequency.exponentialRampToValueAtTime(freq * (chaos ? 1.24 : 1.07), now + i * 0.06 + 0.12);
+        osc.connect(gain);
+        osc.start(now + i * 0.06);
+        osc.stop(now + (chaos ? 0.2 : 0.26) + i * 0.06);
+      });
+
+      if (chaos) {
+        const boing = ctx.createOscillator();
+        boing.type = "sawtooth";
+        boing.frequency.setValueAtTime(220, now + 0.03);
+        boing.frequency.exponentialRampToValueAtTime(95, now + 0.21);
+        boing.connect(gain);
+        boing.start(now + 0.03);
+        boing.stop(now + 0.24);
+      }
+    }
+
+    function createFloatingBlobs() {
+      const colors = ["#ffffff", "#ffe8ff", "#d9fff5", "#fff7d1", "#f6dcff"];
+      for (let i = 0; i < 14; i++) {
+        const blob = document.createElement("span");
+        blob.className = "float-blob";
+        const size = 26 + Math.random() * 74;
+        blob.style.width = size + "px";
+        blob.style.height = size + "px";
+        blob.style.left = Math.random() * 100 + "vw";
+        blob.style.bottom = -100 - Math.random() * 160 + "px";
+        blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+        blob.style.animationDuration = 9 + Math.random() * 13 + "s";
+        blob.style.animationDelay = -Math.random() * 8 + "s";
+        bgLayer.appendChild(blob);
+      }
+    }
+
+    function generateCompliment(event, chaos = prankMode) {
+      const text = randomText();
+      outputEl.classList.remove("show");
+      outputEl.textContent = text;
+      void outputEl.offsetWidth;
+      outputEl.classList.add("show");
+
+      const x = event ? event.clientX : window.innerWidth / 2;
+      const y = event ? event.clientY : window.innerHeight / 2;
+      burstSpark(x, y, chaos ? 22 : 12);
+      playGoofySound(chaos);
+    }
+
+    function startPrankMode() {
+      if (prankTimer) return;
+      prankMode = true;
+      document.body.classList.add("prank");
+      prankBtn.classList.add("active");
+      prankBtn.textContent = "关闭整蛊模式";
+      prankBtn.setAttribute("aria-pressed", "true");
+      generateCompliment(null, true);
+      prankTimer = setInterval(() => {
+        const fakeEvent = {
+          clientX: Math.random() * window.innerWidth,
+          clientY: Math.random() * window.innerHeight
+        };
+        generateCompliment(fakeEvent, true);
+      }, 1100);
+    }
+
+    function stopPrankMode() {
+      prankMode = false;
+      document.body.classList.remove("prank");
+      prankBtn.classList.remove("active");
+      prankBtn.textContent = "开启整蛊模式";
+      prankBtn.setAttribute("aria-pressed", "false");
+      if (prankTimer) {
+        clearInterval(prankTimer);
+        prankTimer = null;
+      }
+    }
+
+    function togglePrankMode() {
+      if (prankMode) {
+        stopPrankMode();
+      } else {
+        startPrankMode();
+      }
+    }
+
+    btn.addEventListener("click", generateCompliment);
+    prankBtn.addEventListener("click", togglePrankMode);
+    createFloatingBlobs();
+    setTimeout(() => generateCompliment(), 380);
+  </script>
+</body>
+</html>
