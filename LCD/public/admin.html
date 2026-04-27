@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>广告机管理端</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="admin-wrap">
+      <h1>广告机管理控制台</h1>
+      <section class="panel">
+        <h2>1. 素材上传</h2>
+        <form id="uploadForm">
+          <input id="fileInput" type="file" accept="image/*,video/*,.gif" required />
+          <button type="submit">上传素材</button>
+        </form>
+        <p class="hint">支持图片 / 视频 / 动图（GIF/WebP）</p>
+      </section>
+
+      <section class="panel">
+        <h2>2. 素材管理</h2>
+        <div id="materialList"></div>
+      </section>
+
+      <section class="panel">
+        <h2>3. 远程控制</h2>
+        <div class="btn-row">
+          <button data-cmd="power-on">开机</button>
+          <button data-cmd="power-off">关机</button>
+          <button data-cmd="pause">暂停播放</button>
+          <button data-cmd="resume">继续播放</button>
+        </div>
+        <p id="stateText"></p>
+      </section>
+
+      <section class="panel">
+        <h2>4. 播放端</h2>
+        <a href="/" target="_blank" rel="noreferrer">打开播放屏幕</a>
+      </section>
+    </main>
+    <script src="/admin.js"></script>
+  </body>
+  </html>

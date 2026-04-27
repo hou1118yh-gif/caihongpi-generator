@@ -1,0 +1,11 @@
+{
+  "name": "ad-player-core",
+  "version": "1.0.0",
+  "description": "Core ad machine features: upload, loop playback, screen adaptation, remote control",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/smoke.test.js"
+  },
+  "dependencies": {}
+}

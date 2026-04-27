@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>广告机播放端</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="player">
+    <main id="screen">
+      <div id="emptyTip">暂无素材，请在管理端上传</div>
+      <img id="imgView" alt="ad-image" />
+      <video id="videoView" muted autoplay playsinline preload="auto"></video>
+      <div id="powerOffMask">设备已关机</div>
+      <div id="pausedMask">播放已暂停</div>
+    </main>
+    <script src="/player.js"></script>
+  </body>
+  </html>
